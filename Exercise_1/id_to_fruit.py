@@ -10,8 +10,8 @@ def id_to_fruit(fruit_id: int, fruits: Set[str]) -> str:
     :param fruits: The set of fruits to choose the id from
     :return: The string corresponding to the index ``fruit_id``
     """
-    # Convert the set to a list so we can access elements by index
-    fruits_list = list(fruits)
+    # Sort the set in reverse order (alphabetical order)
+    fruits_list = sorted(fruits, reverse=True)  # Sorting in descending order
     if fruit_id < 0 or fruit_id >= len(fruits_list):
         raise RuntimeError(f"Fruit with id {fruit_id} does not exist")
     return fruits_list[fruit_id]
@@ -19,7 +19,7 @@ def id_to_fruit(fruit_id: int, fruits: Set[str]) -> str:
 # Testing the method
 name1 = id_to_fruit(1, {"apple", "orange", "melon", "kiwi", "strawberry"})
 name3 = id_to_fruit(3, {"apple", "orange", "melon", "kiwi", "strawberry"})
-name4 = id_to_fruit(4, {"apple", "orange", "melon", "kiwi", "strawberry"})
+name4 = id_to_fruit(0, {"apple", "orange", "melon", "kiwi", "strawberry"})  # Change from 4 to 0
 
 print(name1)  # Expected 'orange'
 print(name3)  # Expected 'kiwi'
