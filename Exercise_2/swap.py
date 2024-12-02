@@ -1,25 +1,46 @@
+import csv
 import numpy as np
+import matplotlib.pyplot as plt
 
-def swap(coords: np.ndarray) -> np.ndarray:
+def plot_data(csv_file_path: str):
     """
-    Swaps the x and y coordinates in the coords array.
+    Plots the precision-recall curve from a .csv file.
     """
-    # Create a copy of the array to avoid overwriting
-    swapped_coords = coords.copy()
+    results = []
+    with open(csv_file_path, "r") as result_csv:
+        csv_reader = csv.reader(result_csv, delimiter=',')
+        next(csv_reader) 
+        for row in csv_reader:
+            results.append([float(row[0]), float(row[1])]) 
     
-    # Swap x and y coordinates
-    swapped_coords[:, 0] = coords[:, 1]  # y11 -> x11
-    swapped_coords[:, 1] = coords[:, 0]  # x11 -> y11
-    swapped_coords[:, 2] = coords[:, 3]  # y12 -> x12
-    swapped_coords[:, 3] = coords[:, 2]  # x12 -> y12
-    
-    return swapped_coords
+    results = np.array(results) 
 
-# Example Usage
-coords = np.array([[10, 5, 15, 6, 0],
-                   [11, 3, 13, 6, 0],
-                   [5, 3, 13, 6, 1],
-                   [4, 4, 13, 6, 1],
-                   [6, 5, 13, 16, 1]])
-swapped_coords = swap(coords)
-print(swapped_coords)
+    plt.plot(results[:, 1], results[:, 0])
+    plt.ylim([-0.05, 1.05])
+    plt.xlim([-0.05, 1.05])
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision-Recall Curve')
+    plt.grid(True)
+    plt.show()
+
+import csv
+
+with open("data_file.csv", "w", newline='') as f:
+    w = csv.writer(f)
+    _ = w.writerow(["precision", "recall"])
+    w.writerows([
+        [0.013, 0.951],
+        [0.376, 0.851],
+        [0.441, 0.839],
+        [0.570, 0.758],
+        [0.635, 0.674],
+        [0.721, 0.604],
+        [0.837, 0.531],
+        [0.860, 0.453],
+        [0.962, 0.348],
+        [0.982, 0.273],
+        [1.0, 0.0]
+    ])
+
+plot_data("data_file.csv")
